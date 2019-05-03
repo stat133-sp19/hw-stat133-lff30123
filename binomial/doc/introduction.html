@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Fangfei Liu" />
+
+<meta name="date" content="2019-05-02" />
+
+<title>Getting Started with binomial</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting Started with binomial</h1>
+<h4 class="author"><em>Fangfei Liu</em></h4>
+<h4 class="date"><em>2019-05-02</em></h4>
+
+
+
+<div id="binomial-distribution" class="section level2">
+<h2>Binomial Distribution</h2>
+<p>The package <code>&quot;binomial&quot;</code> is created to calculate probabilities about the number of successes in a fixed number of random trials performed under identical conditions (assuming a constant probability of success on each trial).</p>
+</div>
+<div id="r-functions" class="section level2">
+<h2>R Functions</h2>
+<p>In order to create the package we created three type of functions: private: these are auxiliary functions not intended to be called by the user (in red color).</p>
+<p>main: these are the main functions that the user is expected to invoke (in blue color).</p>
+<p>methods: these are also public functions (in yellow color) that support classes of objects generated by some of the main functions.</p>
+<div id="private-checker-functions" class="section level3">
+<h3>Private Checker Functions</h3>
+<p>Those functions check whether inputs are valid. Examples are listed down below. The end users will not be able to invoke those. Those are only used to check whether the inputs are correct 1)Check Probability It is a private auxiliary function to test if an input prob is a valid probability value (i.e. 0 &lt; p &lt; 1). check_prob() takes one input: prob. If prob is valid, then check_prob() should return TRUE. If prob is invalid, then check_prob() should stop() execution with an error—e.g. something like ‘invalid prob value’, or ‘p has to be a number betwen 0 and 1’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">check_prob &lt;-<span class="st"> </span><span class="cf">function</span>(prob) {
+  <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.numeric</span>(prob)) {
+    <span class="kw">stop</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">'prob' must be a numeric value&quot;</span>)
+  }
+  <span class="cf">if</span> (<span class="kw">length</span>(prob)<span class="op">!=</span><span class="dv">1</span>) {
+    <span class="kw">stop</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">'prob' must have length of 1&quot;</span>)
+  }
+  <span class="cf">if</span> (<span class="kw">any</span>(prob <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">|</span><span class="st"> </span><span class="kw">any</span>(prob <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)) {
+    <span class="kw">stop</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">'prob' values must be between 0 and 1&quot;</span>)
+  }
+  <span class="ot">TRUE</span>
+}</code></pre></div>
+<p>When we enter check_prob(0.8) into the function, it should return TRUE. When we enter check_prob(-1.1), it should return false because p can’t be smaller than 0. Similiarly like this, there are two other checker functions that check for valid number of success and valid number of trials.</p>
+</div>
+</div>
+<div id="private-auxiliary-functions" class="section level2">
+<h2>Private Auxiliary Functions</h2>
+<p>All these functions take two arguments: trials and prob. And return the corresponding value from the computed summary measure. Those functions are going to be called within the main functions. You can consider them as building blocks for the main functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aux_mean &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  result &lt;-<span class="st"> </span>trials<span class="op">*</span>prob
+  <span class="kw">return</span>(result)
+}
+<span class="kw">aux_mean</span>(<span class="dv">10</span>, <span class="fl">0.3</span>)
+<span class="co">#&gt; [1] 3</span>
+
+
+<span class="co">#Expected variance of number of success.</span>
+aux_variance &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  result &lt;-<span class="st"> </span>trials<span class="op">*</span>prob<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>prob)
+  <span class="kw">return</span>(result)
+}
+<span class="kw">aux_variance</span>(<span class="dv">10</span>, <span class="fl">0.3</span>)
+<span class="co">#&gt; [1] 2.1</span>
+
+<span class="co">#The most likely number of success in n independent trials with probability p</span>
+aux_mode &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  m &lt;-<span class="st"> </span><span class="kw">floor</span>(trials<span class="op">*</span>prob<span class="op">+</span>prob)
+  <span class="kw">return</span>(m)
+}
+<span class="kw">aux_mode</span>(<span class="dv">10</span>, <span class="fl">0.3</span>)
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#Skewness is a measure of the asymmetry of the probability distribution of a random variable about its mean.</span>
+aux_skewness &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  skewness &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">-</span><span class="dv">2</span><span class="op">*</span>prob)<span class="op">/</span><span class="kw">sqrt</span>(trials<span class="op">*</span>prob<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>prob))
+  <span class="kw">return</span>(skewness)
+}
+<span class="kw">aux_skewness</span>(<span class="dv">10</span>, <span class="fl">0.3</span>)
+<span class="co">#&gt; [1] 0.2760262</span>
+<span class="co">#kurtosis is a descriptor of the shape of a probability distribution</span>
+aux_kurtosis &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  kurtosis &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">-</span><span class="dv">6</span><span class="op">*</span>prob<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>prob))<span class="op">/</span>(trials<span class="op">*</span>prob<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>prob))
+  <span class="kw">return</span>(kurtosis)
+}
+<span class="kw">aux_kurtosis</span>(<span class="dv">10</span>, <span class="fl">0.3</span>)
+<span class="co">#&gt; [1] -0.1238095</span></code></pre></div>
+</div>
+<div id="main-functions" class="section level2">
+<h2>Main Functions</h2>
+<p>Now we are going to create main functions, those are the functions that are visible to the end users. Those functions are going to give us the probaility and the dataframes of probability distributions.</p>
+<div id="bin_probability" class="section level3">
+<h3>bin_probability</h3>
+<p>bin_probability should give us the an object of class “bindis and data.frame”. Basically it gives us a dataframe with number of success and their corresponding probability. plot.bindis()shows a bar plot with number of successes on the x axis and probability on the y axis</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bin_distribution &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  success &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span>trials)
+  probability &lt;-<span class="st"> </span><span class="kw">bin_probability</span>(success,trials,prob)
+  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(success,probability)
+  <span class="kw">class</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;bindis&quot;</span>,<span class="st">&quot;data.frame&quot;</span>)
+  <span class="kw">return</span>(dat)
+}
+<span class="co"># binomial probability distribution</span>
+<span class="kw">bin_distribution</span>(<span class="dt">trials =</span> <span class="dv">5</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
+<span class="co">#&gt;   success probability</span>
+<span class="co">#&gt; 1       0     0.03125</span>
+<span class="co">#&gt; 2       1     0.15625</span>
+<span class="co">#&gt; 3       2     0.31250</span>
+<span class="co">#&gt; 4       3     0.31250</span>
+<span class="co">#&gt; 5       4     0.15625</span>
+<span class="co">#&gt; 6       5     0.03125</span>
+
+<span class="co"># plotting binomial probability distribution</span>
+
+plot.bindis &lt;-<span class="st"> </span><span class="cf">function</span>(datframe){<span class="kw">barplot</span>(datframe<span class="op">$</span>probability,<span class="dt">xlab=</span><span class="st">&quot;success&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;probability&quot;</span>,<span class="dt">names.arg =</span> datframe<span class="op">$</span>success,<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)}
+
+<span class="co"># plotting binomial probability distribution</span>
+dis1 &lt;-<span class="st"> </span><span class="kw">bin_distribution</span>(<span class="dt">trials =</span> <span class="dv">5</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
+<span class="kw">plot</span>(dis1)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="bin_cumulative-and-plot.bincum" class="section level3">
+<h3>bin_cumulative and plot.bincum</h3>
+<p>This function should return a data frame with both the probability distribution and thecumulative probabilities: sucesses in the first column, probability in the second column,and cumulative in the third column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bin_cumulative &lt;-<span class="st"> </span><span class="cf">function</span>(trials,prob){
+  success &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span>trials
+  probability &lt;-<span class="st"> </span><span class="kw">bin_probability</span>(success,trials,prob)
+  cumulative &lt;-<span class="st"> </span><span class="kw">cumsum</span>(probability)
+  dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">'success'</span> =<span class="st"> </span>success, <span class="st">&quot;probability&quot;</span>=probability,<span class="st">&quot;cumulative&quot;</span>=<span class="st"> </span>cumulative)
+  <span class="kw">class</span>(dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;bincum&quot;</span>,<span class="st">&quot;data.frame&quot;</span>)
+  dat
+}
+
+<span class="kw">bin_cumulative</span>(<span class="dt">trials =</span> <span class="dv">5</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
+<span class="co">#&gt;   success probability cumulative</span>
+<span class="co">#&gt; 1       0     0.03125    0.03125</span>
+<span class="co">#&gt; 2       1     0.15625    0.18750</span>
+<span class="co">#&gt; 3       2     0.31250    0.50000</span>
+<span class="co">#&gt; 4       3     0.31250    0.81250</span>
+<span class="co">#&gt; 5       4     0.15625    0.96875</span>
+<span class="co">#&gt; 6       5     0.03125    1.00000</span></code></pre></div>
+<p>the plotting method will gives us a graph description the cumulative probability for getting certain number of successs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plot.bincum &lt;-<span class="st"> </span><span class="cf">function</span>(datframe){
+  result &lt;-<span class="st"> </span><span class="kw">plot</span>(datframe<span class="op">$</span>success,datframe<span class="op">$</span>cumulative,<span class="dt">xlab=</span><span class="st">&quot;success&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;probability&quot;</span>,<span class="dt">type=</span><span class="st">&quot;o&quot;</span>)
+  <span class="kw">return</span>(result)
+}
+<span class="co"># plotting binomial cumulative distribution</span>
+dis2 &lt;-<span class="st"> </span><span class="kw">bin_cumulative</span>(<span class="dt">trials =</span> <span class="dv">5</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>)
+<span class="kw">plot</span>(dis2)</code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAYAAAAUg66AAAAEGWlDQ1BrQ0dDb2xvclNwYWNlR2VuZXJpY1JHQgAAOI2NVV1oHFUUPrtzZyMkzlNsNIV0qD8NJQ2TVjShtLp/3d02bpZJNtoi6GT27s6Yyc44M7v9oU9FUHwx6psUxL+3gCAo9Q/bPrQvlQol2tQgKD60+INQ6Ium65k7M5lpurHeZe58853vnnvuuWfvBei5qliWkRQBFpquLRcy4nOHj4g9K5CEh6AXBqFXUR0rXalMAjZPC3e1W99Dwntf2dXd/p+tt0YdFSBxH2Kz5qgLiI8B8KdVy3YBevqRHz/qWh72Yui3MUDEL3q44WPXw3M+fo1pZuQs4tOIBVVTaoiXEI/MxfhGDPsxsNZfoE1q66ro5aJim3XdoLFw72H+n23BaIXzbcOnz5mfPoTvYVz7KzUl5+FRxEuqkp9G/Ajia219thzg25abkRE/BpDc3pqvphHvRFys2weqvp+krbWKIX7nhDbzLOItiM8358pTwdirqpPFnMF2xLc1WvLyOwTAibpbmvHHcvttU57y5+XqNZrLe3lE/Pq8eUj2fXKfOe3pfOjzhJYtB/yll5SDFcSDiH+hRkH25+L+sdxKEAMZahrlSX8ukqMOWy/jXW2m6M9LDBc31B9LFuv6gVKg/0Szi3KAr1kGq1GMjU/aLbnq6/lRxc4XfJ98hTargX++DbMJBSiYMIe9Ck1YAxFkKEAG3xbYaKmDDgYyFK0UGYpfoWYXG+fAPPI6tJnNwb7ClP7IyF+D+bjOtCpkhz6CFrIa/I6sFtNl8auFXGMTP34sNwI/JhkgEtmDz14ySfaRcTIBInmKPE32kxyyE2Tv+thKbEVePDfW/byMM1Kmm0XdObS7oGD/MypMXFPXrCwOtoYjyyn7BV29/MZfsVzpLDdRtuIZnbpXzvlf+ev8MvYr/Gqk4H/kV/G3csdazLuyTMPsbFhzd1UabQbjFvDRmcWJxR3zcfHkVw9GfpbJmeev9F08WW8uDkaslwX6avlWGU6NRKz0g/SHtCy9J30o/ca9zX3Kfc19zn3BXQKRO8ud477hLnAfc1/G9mrzGlrfexZ5GLdn6ZZrrEohI2wVHhZywjbhUWEy8icMCGNCUdiBlq3r+xafL549HQ5jH+an+1y+LlYBifuxAvRN/lVVVOlwlCkdVm9NOL5BE4wkQ2SMlDZU97hX86EilU/lUmkQUztTE6mx1EEPh7OmdqBtAvv8HdWpbrJS6tJj3n0CWdM6busNzRV3S9KTYhqvNiqWmuroiKgYhshMjmhTh9ptWhsF7970j/SbMrsPE1suR5z7DMC+P/Hs+y7ijrQAlhyAgccjbhjPygfeBTjzhNqy28EdkUh8C+DU9+z2v/oyeH791OncxHOs5y2AtTc7nb/f73TWPkD/qwBnjX8BoJ98VQNcC+8AACt5SURBVHgB7Z0J/E1V9/+XEjKTMmaKJxEyJpQmGh9TlCkiY/JU0mAqhZ6ESJ5IpkyFzA1oEulVJGOGSvSEMkRkKp72b3/263/v/36v+73nfr/uGe9nvV73e8+955w9vM/5rrvP2muvlUVpEQoJkAAJuEDgAhfqZJUkQAIkYAhQAfFGIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJUAHxHiABEnCNABWQa+hZMQmQABUQ7wESIAHXCFABuYaeFZMACVAB8R4gARJwjQAVkGvoWTEJkAAVEO8BEiAB1whQAbmGnhWTAAlQAfEeIAEScI0AFZBr6FkxCZAAFRDvARIgAdcIUAG5hp4VkwAJZCWCzBEYM2aMjBs3TvLly5e5AngWCZwnAaWU/P3334L3Cy64wLwii8yRI4csWbJE8uTJE/m1p7az6MYrT7XIJ42pVauWDBkyhArIJ9craM08evSo9OnTRw4dOiTFixeXb775xry//fbbcuGFF5ru3nTTTfLll19K1apVPdt9joAyeWmyZs0qefPmlTp16mSyBJ5GApkjcPLkScmVK5fcf//9Mm3aNFPI//73P8mePbv07dtXPvnkE8H9+Y9//CNzFTh4Fm1ADsJmVSSQDAKvvfaa1K5dO6x8UCZGPWfPnjWvpUuXJqMaR8rgCCgK82effSbjx4+P+vbcjxs3bpS1a9fKddddd+5OfpMSBA4fPmwegzDiwKjk2muvlVGjRkm5cuVs6f+ff/4pe/fulXfffdeMvEeOHGk+33bbbYIX5Pbbb5evvvpK7r77blvakOxCqYCiiJYsWVKaNGkS9e25HxcsWCAY9lJSkwCUwSWXXCKtW7c2jzx4JHr99delfPnyRgFghJIRgTKDcol87dmzJ83nY8eOSbFixYyyO3HihBn1wP5zxRVXhKs6fvy4FCxYMPzZ6xs0QmfyCmFm4eWXX5YuXbpksgSe5mcCbdu2lQ0bNsi3336bphuzZ8+W3r17y48//mhsMngs+uWXX8KKJFqpQOHgO8xYQZlEvkqUKJHm86WXXipZsmSRGTNmyKBBg+T77783n0MN+P3336VAgQLy9ddfS40aNYzxGTYiGqFDhPhOAgEhgMeudevWmd78+uuvsnjxYjMjBYXyxx9/SPXq1QWjGsxSFS5cOKxIQkqlSpUqab7LmTNnwmTatWsn8+bNM9PuUIJlypSR9evXy4033ihDhw41yifhwlw+kI9gLl8AVu9PAngEwuimX79+xmbYrFkzueyyy+Sqq64yCgejoDvuuEOKFClyjn9OMnoMEwDcQNq0aWNGV6VKlZI33nhDOnfunIziHSuDCsgx1KwoKAROnTolhQoVkkqVKkmrVq1k8+bNZjSD/mE01KtXL2nRooXtPmIDBgwQvPwsnIb389Vj2x0lgBHPhAkTjKH58ssvFxh8MfKB3QaCx62iRYvKs88+a7vycbTjNlbGEZCNcFl0MAhgscDcuXOlf//+Urp0aVm4cKHUrFnTuGFgtgsGX8yCwTVj4MCBxkAcjJ7b3wsqIPsZswYfE1i+fLnxLsZaK0yz33zzzeHeYDkObEFQPJiWh2HZT1Pg4Y64uEEF5CJ8Vu1dAmvWrJGnn35a9u3bZ2aW7rnnnpiNxewVnVFjoknoS9qAEsLEg1KFwLZt26R58+YChQNfH/j5pKd8UoWJnf0MlAJCaIKdO3ea6VE7obHs4BH4+eefpVOnTtKgQQOpV6+ecfJ78MEHwyvLg9djb/TIlwpoy5Yt0r17d3PDYO0WBOti4HOBdTjwBsVsBYUErAj89ttvxnMZ3sKYzfrhhx/k8ccfN57JVudy//kT8J0NCMoHxr9s2bIZXwzEP3nllVfMzAN8Mm655RYzY9GjRw/jIdqwYcPzp8QSAkcAxmMspRk9erRx5tu+fbtxJAxcRz3eId+NgF588UWpVq2aMQ7i16pnz57StWtX86sFT1AoIbipY1UwwhZQSCCSwF9//SWvvvqqWcC5Y8cOs24Kn+HFTHGegO8U0HfffWd+seB3gYV5CMoEadmyZRp68ETFgkAKCYAA7IPTp0+XK6+8UpYtWyaYXseiTqyjorhHwFIBrVq1Sh577DHj6+BeM/9/zQhHgIWAIQltr1ixIvSVecejGhb+UYJPAMsfPvjgA4E9EN7J0YK4yLDxwI8HSgjxdOCzQ/EAAcSEjiebNm1SeoEd4kYrfRGVDrikDhw4EO8UW/fpG820RXuiKv2YpS666CKlF/4p7QKv9PO80opHDR8+XOkIcUqHIrCtLblz51ba0G1b+Sw4MQK49nrSQWlbn9Lhcc29oeMgm5NXrlyp6tatqypXrqy0EkqswAAdpZWs0qvlPd0jRNRPSHT0P6UX2Sm9CM/80+ugXWr+/PlKP1MndH4yD5ozZ47SU6VKO4CpKVOmmKK1z4bSj2TmBsQ7bkw7hQrITrqJlY37ET+MOlBX+AT9eGW+09EJlV42ofSIR+nAceH9qbQRKAUUunBQOPg10T4TSgdlNwrpkUceUdqBK3SIa+/aa1Xp4bXavXu37W2gArIdcdwK9MJPo2j0NHr4OO0DpnR4CnNf6oDsrvw4hhvjgQ0/KCBLG1D0U+J///tfE/wIaUAQIrJs2bImBGXFihXNQrzo4538jJXId911lyA2CiXYBOChfP3114fXXg0ePFiuvvpqE49n69atsn//ftGP58GGEIDeJeQHhDADCDWJWQPkGUKEN8w+4TNiokCwWvjee+814QkQDc5tQVQ6pCa5+OKLM9QUeFKvXr3a8pwzZ87ENHhansgDkkJAj0AFIUghgwYNkueee87E4sG9uWvXLpMyKSkVsRBbCVgqIG3Ik1tvvdU0ApH2EXoSkd7wzx0pd955p/mIXx4vCILLwwlR24sy1BwsPvz4448tz0FAemRCoLhDACNu/DC2b9/ejMBx34V8eerXr2/8wNxpGWvNCIG0WiTGmVjt+9JLL5mFeQiKnZ4gKRqmQ/EL5AVBVDpkKMioYFiPl5VoA3z4hrc6lvuTTwBB3BF+FI9e//rXv0w4DDx6PfXUU8ZJNZHUSslvFUvMKAFLBYRHLKyRiaV8EJoSYQuwgA8jIq8oH0B4/vnnM8qCx/uIwDvvvGNiIH/00Ufyn//8x4TEgHMqRr2wTdL+44+LaamA4OiHEJNI9REt+A6R+LGgz61ATHqywQzFkRnSrTZEc+Fnewkg8+dDDz1kHpW1j49Z/2dvjSzdLgIxFdDp06fNszW8Sg8ePGhWCIdsPKGG4B8fC/iQHx2rz50UpD4ZM2aMMYxjG7F6IWgLQmbCZgWjJAyVlGARgGc+JkDgzQzlQ/E3gZgKCM/XWMwJgzMerbDmCqvPIwXfwdjXoUOHNMnRIo+xY/unn34y9aJ+rP+CGwBGPviMPEyYAcHwHAtSYUyOzBppR3tYpnMEkIcLwcEwI4s0yJQAELDyl9J5po0HtNVxTu3Xq9+VVnxKj9LSrRLOkjosh3rmmWfSPeZ8d9AR8XwJZux8bWBW2saoFi1alLETU/hoPzgixhwBwbAM2w/SDiP/NRaAIgxGeoLYuU4JMkFi1IVZt/QEBsgHHnjAhF3AoxjF3wS0Z7t5rEb8nsaNG/u7M2x9GgLpKqBhw4YZp0JcfGzHEycVkF5caBwFrXKyQ4GG8jXFazv3eZsA8qojEwXS3SALKCVYBGIqoIcffljwgiB+ypEjRzzTa9yEUEJwPEPQcNh4MEpD2hTYgKAwZ86cKe+//75gipbiXwKYXUWES4TfxYsSPAIxFZCXu3nNNdeIDhEi3bp1M49iCDQVLZgFQ8Ap+CdR/EkAS2luu+02adq0qTz55JP+7ARbbUkgpgJav369YLozUYEnqpOCwPOY4UJ4TSyOxagHa7Ngq0IQMoyIKP4lADcQLCrGTNcLL7zg346w5ZYEYiogRBfMiF3HaQUU6hVcA6CM8KIEgwB+SJCXCxENxo4dG4xOsRfpEogZjgMhWJFqNtFXuqVzBwlkgAAep2HXwwynDjTnqH9ZBprJQ5NIIOYIKInlsygSSJgAZjYx4QEv5+hoCwkXwgN9RSCmAor0A0LMFcT6iScZeVyLVw73pS4BJAPEanbMXMbz8UpdQsHseboKyKt+QMG8DKndK0QugOJBVgusaKekDoGYCig9P6CjR4+a3Ov58+c3RkKsQKeQwPkQQFJAnb1EvvjiC8F9RUktAjGN0NEIkAwQURBxg9SoUcM4/2EF/NChQ8Mr0aPP4WcSsCLw5ptvmmB3n376KYO7WcEK6P6YI6DIvsIhDKE4sEJ+0qRJJsogUiIjJsu///1vwagIERMpJJARAohWANshQv5efvnlGTmVxwaIgKUCwrM5QmAgjzZCX0AQsrRjx45mtgI+GwiLGRTDIVwPoHStRC+yFsSFpmScAFIjI6AYvNUzEzY34zXyDK8SsFRAWAyokwCGlU9kR7BOB45jiAUdlFQ4iPWciGPliRMnZM+ePZE4uJ0Agc8//9wEFNNhNUy65ARO4SEBJmBpA0LI1c2bNxvjczSHBQsWSGkdgTAoygf9a926tYkCiUiQ8V6IthikfkdfWzs+Y4kPRsyzZs0yMZztqINl+otAzBEQYj1jOUZIdJZJE/7ypptuMpESkWsLiQknTpwoTzzxROgwvpNAugQQvhcTGW+88UY4zVO6B3NHyhCIqYAwJRodyAtT7jAY4hUS2H0QmxmzYRQSSI8AbIiIUDBixAhp0qRJeofx+xQkEFMBwQaSiB0kBXmxyxkkAPsgAor169dP2rVrl8GzeXjQCVjagKwAeClYmVVbud9ZAggQh5EPEghi1otCAtEEYo6Aog/CVDySvyEVbmjqOZSaGE6KmLqmpDYBrGRHfCY8liNDCVI6IaAY0nn37ds3teGw9+kSsBwB/fzzzyYQOOxCCPaOaIRFihQRLFLdsmWLcUZMt3TuSAkCsBfinkB6pEKFCsno0aON4qlZs2bcZAYpAYedjEvAcgQEvw38uu3cudOMfpCiGWt3sGiwR48e8uOPP8atgDuDTQBJAmfMmCHff/+9CQyHCJVwT0BUSkStpJBAPAKWIyA4IiI0Jvxe8uXLJ0WLFhWdK8wMs5GyGdOqcEakpB4BzIhC+eD6IyolfqgQvxmpc0qWLClvv/126kFhjzNEwFIBlSlTxmQbDZVaoUIFkxYHn0MpmekRHKKTWu9IfYR0OaHgYchcceDAAZkzZ44xOmM/hQTiEbBUQNddd52x9yDRH2a88BmPYLAFYREqHsngDe0FwfII2KwozhDAyAd2QchTTz0lu3VygCVLlhhDNOJ1c2TszHXwcy2WCgjGRayCx+p3+HTA7oOhdtWqVY2zItLjYNbDC4J1XNWqVfNCU1KiDVgjuHjxYhkyZIjJw4ac7aGAYpj50im0U4IDO5l5AlmQOjuR0zHFCm9ovDAD9uGHH5rYQKEV8omUkYxj4E2LX9pYghX7MJo/+OCDZnf16tWlU6dOsQ497+/y5MkjSBVslaH1vCvycAG4dSpVqiTbtm0zkxS4F3CfYMkOZk0xAgo9nnm4G4FtGgYJeFrBu1fFchYs1HAMqSMjImJRoRsREdetW2eMm7A/RadehmLETY/QnpCghAgJXQOvvU+fPl2OHTtmFA6M0LAPYtICC5jxOEzl47Ur5sH2YARkJXpkoW6//XaMlMIvPQJQeuit9D+81elJ3a8dIJVOVqf0rJzSNiiFzyHR2l7p6d/QR1vfUf+ECRNsrcPLhevHXVW4cGGFewOif5yUHgkpbSdU+hHdy01PmbZVqVJFbdiwwdP9tRwBeS0iInLAw77QqFEjk0MKKVwwzGRoDOd+3fD4DdsfAoohUgIkb9685uVcK1hTIAhYqUf80umhtNKOiOccqmc8lJ4FUTqV7jn7nPhCD/OVNoorffOrqVOnKo6A7Ke+evVqpb2dFd4p3iYQiBGQlyMi5syZU1577TWTRxzGZsQpothHYOPGjSacBgKK1a1b176KWHLKELCchvdDRMS77rrLRG2Ej9I111yTMhfPyY5i0TEWl2q7lzRs2NDJqllXgAnEtAH5MSLiZZddJm+99Vb4UsF2hVkYjorCSDK9gfVdiP8Nx9NmzZpluhyeSALRBGIqoCBERMRaJPxSY1lARgSevMjUaSUnT56UvXv3Wh3m+/379+83AcXg6dy+fXvf94cd8BaBmAooCBERe/XqlamUL7BtjBs3zvIq3XDDDSb0hOWBPj4AS28QUAwpmJAtl0ICySYQUwGlVwnWWSEpIVbEY/oVU+JelURGMbHajjASeFkJnDCD7OgIR0LYfBBIvn///lY4uJ8EMkUgIQ2CmD+I64vHGrxfddVVgqUIvXv3Fj0RmamKk3US6kf6HIT/pCSHACJcIpIh1tUx621ymLKU2AQsR0BY29O0aVMTYhN2AMw4wbiLWDBIzYwlGi+++GLs0m36FrYXZOPA4kdsnz171tQEZziszMdjA6L0IYYRJWMEwLJFixZmlJvIo2jGSufRJJCWgKUCQjxoJCbE6+qrrw6fjSlvrIIfOXKkowoIKV6wyhp1t2zZ0mRsRShQfMYoaNeuXfLOO+8Ico8jIt8VV1wRbjM34hPAaBIRDiHwLvfyI3b8nnCvXwhYKiD4fyC2b6TyCXUOMYIwKsI/PQKXOSHDhw+X0nqUA8WYng1GrxUztgv8E0XnN3OijX6tA6FWEHLlgw8+4EJSv15En7Xb0gaEFed6QVvMQF9YhwVjLGIGOSVoC6aD01M+aAeCZEE5IoYRJTEC+CFBtlu4IeTIkSOxk3gUCZwnAUsFhJkQzAohxg7++WGgRAiG9957z4wu4JjmpLMfpsn1OiTLbiMcaHS4DsuTUvQA2PJwPaGwaTdL0ZvApW5bPoLBsLtgwQKT1RKzIrC1hGa+YOzFWiwnpU2bNmYdEhzk2rZta2w8UJCwV8AGhGBlM2fONBH68JhGiU8A12/ixIlGqcOWRiEBJwlYKiAE+cI/NZZnYDHi9u3bzRC9YsWKUrt2bSfbaurCWi/Eo0Y4iA4dOpjwsNGNgGJEqIgGDRpE7+LnCALIaAF7GUaUTj5GRzSBmylOwFIBYWiOnN5wQsTCVLzcFkTfwwwXXASwTgkKEpEQixUrJiVKlEjIkdDtPrhd/6JFi6RPnz6yYsUKxlJy+2KkcP2WCgiZLiEIx4p/bi8JfJCgjPCiJE4Aj6aIZb1s2TITRjXxM3kkCSSXgKUCwiMP7C5Y+wSDM/xqomeg4BFN8QeBL7/8Ulq3bm3seswg4o9rFuRWWiqg9evXy8KFCw2DyHAXkVCogCJpeHcbtjNkLYXthylzvHudUqlllgpIB6M3GQ5SCUoQ+4rc7XCpwPIKvFNIwAsELP2AIhsJHyCMiJh9NJKK97dxvRBQDP4+99xzj/cbzBamDIGEFBBWm995553GSQ3J/rAqHhEIR40alTKg/NpR5GpHBAPMeME7nEICXiJg+QiGqe5atWoZ35/HH3/crDSHMyKiJg4aNMg4/w0ePNhLfWJb/h8B+HDBJwpLVxBkjkICXiNgqYBWrVol8DrWaXmMn02oAxjSIybQ0KFDzZIMrpwOkXHnffz48YK1eYiFjXhNiGDYuXNnkz9t4MCB7jSKtZKABQHLRzCshsevKJz8oqVVq1Zy6NAh2bNnT/QufnaQwIABA0wcaygc2HnwY1C5cmWzFm7EiBEOtoRVkUDGCFiOgOD/88wzzwiiIpYtWzZN6ZMnTzahMWATCopEuh3E6xMM8oiZ7LaMHj3ajEJ1imqjeBBQbNiwYVKnTh35/PPPzcJhrOejkIAXCVgqICxQhM9IpUqVjDMipuWxYvqrr76S6dOnS/PmzdOE7UQA80svvdSLfU2oTRg9IMSIlcAO5gVZvHix8WhGu3VOduM0CiWEiJWI54x1XninkIAXCVgqIDivIbQFlj3AixavkCBuzPvvv29eoe8QstXPCqhq1aqCl5UgMFqBAgWsDrN9Px6B8XiMOD5wMuzatav5YUBMJCQP+O2332xvAysggcwSsFRAcFrDOjCKNwlghNqkSRPJlSuXUUIIJg9ByBSEpn3kkUe82XC2igQ0AUsFREreJICRad++fWXHjh0mjCoeua6//vpwYzEqQqC4GjVqhL/jBgl4jYDlLJjXGpzq7UH8bQRia9SokbHtIBwJXCVCi4V79uxp4ncjbxviO3vFVpXq1439j02ACig2F899C18s+PYgQQD8fOCXhc+w9WCSYN++fXLvvfca5YP1XiG7nec6wgaRQAQBPoJFwPDiJuxvMHhDqWApBfyyYmVuhcEZYTYoJOAnAhwBefRqnT59WuBEWL58efnll19MQgDkYIulfDzaBTaLBCwJcARkicjZA+BQOGXKFLPO7tprrzX+PBUqVHC2EayNBBwiQAXkEOhEqsG0ef/+/U3oW2QiwSJgCgkEmQAVkAeuLmI0P/3006YlY8eOlYYNG3qgVWwCCdhPwPcKCA538AbG8gm/5bVCqiMoHgQMGzJkiLRo0YLT5vbf86zBQwR8aYTeu3evyUlfWueIxxIRBEeDcTZfvnxmGQXiFh0/ftxDmNM2BTNZUDbwYL7vvvvk22+/lZYtW1L5pMXETylAwHcjoJ9++sn4vcDBDv+0WKGPkQ8+IzMqHPVgS5k3b57JHYYsHk4JDMiYsUJb4Ikc7QQIxYkgbrDvIBc7gsMzD7tTV4f1eJGA7xQQfGJK65EP7CbR6YFCgJHtEyvAp02bZoKlhb638x3BwB599FFBmA4oIrzQRsTlgWJEnJ5JkyZJ9+7djRMhRmsUEkh1Ar57BNuwYYMJMZqe8sEFhXcwnPaWLl3qyPWFLeef//yncRaEPQdeyS+//LJUqVJFOnXqJFgWceLECdm6datJhUzl48hlYSU+IOA7BVS3bl0T48aKLZYiFC9e3Oqw896PGDwIg4FHvtDsFdJEIx5z/vz5zeMWQpi89tprzL9+3rRZQNAI+O4RDFlaoYSwNgqLMmHjgQEaAbnwqIM88TNnzjQxivAIZLcg6wQetxCYDYJZuSuvvNKkPEbe9Xr16lHx2H0RWL5vCfhOASFVNEJRdOvWTTp06GCiAEbTRwzr5cuXS4MGDaJ3Jf0zpv8RgTAkGBFNnTrVrE6HMsIr2hgdOpbvJJDqBHyngHDBypUrZ2a4kDII4Sgw6sFjD2aeSpQo4eh6KUR/RL2zZs0y4VChkBAaA4KRGJZRIFgYhQRI4FwCvlRAoW7ABwjKCK9oQXqarFmzmqBc0fvifYZTI0JdWAkeu7BgFIKV6ggGBuWDkBgYBU2YMEEeeughZpG1Asn9KU3A1woo3pVDpg4YhefMmRPvsHP2wWAMr2QrwYgLgflDj1fPPvus8e2BjQqPXbBL4VGwd+/eVkUlbT8UIhQoRoFuCDKnwEUC9jinBcHXkCwBL6cFP3YnT56UwoULO121sT8iLdb9999/Tt2wiXpdsuh/FuX1RmamfUglhFAWsS5MZsqLPgeKCrYejLIiBVP/8MJ2IzA//gnwjxidPimyfXZuw80Aj5xuKCC4PyD9kBsuDpjxxDV3Q/FjJA7PeviXRQt+DB577LGEsrxEn+vU58AqIKcARteD1eyw+fTr1y96l+2fkYIHHtbIB+aG4J8/pAicrh/B2LC0BckynRakp/rwww+N46vTdSPrCWZdMfL1ozg/Vk4yJQzgDh48aKbgk1w0iyMBErCZgC8VkN8Xo9p8TVk8CfiGQFoDhg+a7eXFqD7AxyaSgKcI+E4BeXUxqqeuKhtDAj4h4LtHMC8uRvXJtWYzScBzBHyngLy2GNVzV5QNIgEfEfDdI5jXFqP66FqzqSTgOQK+U0BeW4zquSvKBpGAjwj42hHRC4tRo681woRgeQbiVDst8IRGSFgnw9BG9hGxrZE22g1PaCxKhiOkW57QWI5x+eWXR+JwZBue0Dt27JCKFSs6Ul+yK/G1Ako2DJZHAiTgLAHfGaGdxcPaSIAE7CRABWQnXZZNAiQQlwAVUFw83EkCJGAnASogO+mybBIggbgEqIDi4uFOEiABOwlQAdlJl2WTAAnEJUAFFBcPd5IACdhJgArITrosmwRIIC4BKqC4eLiTBEjATgJUQHbSZdkkQAJxCVABxcWT8Z1uJxnB2iCskXNDkA/NLXGbu1v99nu9VEBJuoLr1683ueoLFChg0uIMHjw4SSUnXgwUQOPGjaVr166Jn3SeR544cUL69OljssMiRVGpUqXkhRdeSJOu+jyriHv6smXLpGXLlpInTx6pVKmSjBo1Ku7xdu387LPPzCLclStX2lVFmnLnzZtnUiAhDVLkC9/7SXwXjsOLcLEKvUWLFnLttdfKp59+Khs3bpSePXuaGxJpepyQP//8Ux599FF5//33pUOHDk5UaepA9tclS5YYJXTzzTebbSRpPHXqlNithLECHql4HnjgAZOqG+mInnzySZMY0smEkMgJ1rFjR1OvU+C/+OILkwwRfY+UMmXKRH70/rYeulLOk4D+h1M6KZ7S/3Thkp577jlVqFAhpbOVhr+za+Prr79WOhyDyp8/v9JhQJRWQHZVlaZcnZBP6dAb6oknnkjz/T333GPakeZLGz507txZ6dAjSj92hktv3ry5qlq1avizExs6KaDSoy8k+FR6JOREleqWW25RWvk4UpedlfARLAm/EXgMuOOOOyRHjhzh0vDLjGRxa9euDX9n18bEiROlePHigsdAJ7Oiwt40btw46dGjR5qu4VcY8XH0jZvm+2R/ePXVV2XVqlVp4g8hM+xFF12U7KrSLe+jjz6S2bNnyyuvvJLuMXbs2LRpk1SrVs0U7abt7Xz7RgV0vgT1+T/88INRAJFFQSFA8A9htzz//POyfPlyk5fd7roiyy9YsKCxN0UO+/HP8NZbb5nHUQRms1Og8IsWLWqqwDUAB6TM7tWrl53Vhss+duyYdOrUSUaOHGlsYOEdNm/gnkIyzu3btwsee8GhevXqRhnbXHXSi6cNKAlIcSNecsklaUrSj0PmMyIk2i1u5KFPr099+/Y1URnnz5+f3iFJ/37Xrl1Svnx5U+7dd98tiBvuhCDvOiJAwv6zbds2J6o0dcDGCEEqbtjgoIRef/11875u3TqpUqWK2e+HPxwBJeEqYcgf/Wsf+nzmzJkk1OCPIoYMGSIvvfSSDBs2TGrXru1Yo6GAoQDwT7hlyxapU6eO7bNwMPbPnTtXJkyY4Fg/QxVB6aFezLx169ZNBgwYINoOKBh9YhToJ+EIKAlXq0iRInLkyJE0JWkDrfmM6eFUEG2IlhEjRhjlg2l5JyV37tzhqWjwxggIj2L169e3pRlwPejSpYtog7dg9IUXMvZCYIfLlSuX1KhRw5a6UWjJkiVN/ZEVFC5cWG644QYzAxv5vde3qYCScIWggKJtPQgOD3ErQHwSupVwEVA48L/BCMRJHyT43MDvqnLlyuG2NmzY0GyvWbPGNgV04MAB2bdvn7z55pvmFa5cb8AVolatWoL67RK4H6B+jPQiBbYgJw3wkXVndpuPYJklF3HerbfeKkuXLhXMCoXkvffeEz01b+svYaguN9/xyAXlM2vWLEeVD/r88MMPn+PzBO6QcuXKmXc7/iD7BUY8kS/MhkHmzJkjixcvtqPacJmTJ08WJOiEETokGHF//PHHUrNmzdBX/ni3c44/VcrWv0ZK//Io7XyoDh8+rFasWKH0DJEaPXq04wj0r6JjfkB79uxROXPmVPqmV9omcc5LLwmxtf9jx441vjfa4VHpEajSSlBpNwSljbDK7rqjO7Z161bH/IB0Gh518cUXKz3aUzpVudITHapdu3Yqe/bsSqdGim6apz/DV4OSBALvvvuucTzUPztG+ehHEXX27NkklJyxIpxUQNr3xfzToc+xXkePHs1Y4zNx9MCBA80/Xqj+Ro0aqd27d2eipPM7xUkFhJbiftO2oDB3PeJT2jv6/DrhwtnMC6bv3GSJvn5mWF6iRAnBuiiKMwSwDAWG4GLFipnHXmdqdb8W3G96FCrZsmUTGKH9KFRAfrxqbDMJBIQAjdABuZDsBgn4kQAVkB+vGttMAgEhQAUUkAvJbpCAHwlQAfnxqrHNJBAQAlRAAbmQ7AYJ+JEAFZAfrxrbTAIBIUAFFJALyW6QgB8JUAH58aqxzSQQEAJUQAG5kOwGCfiRABWQH68a20wCASFABRSQC8lukIAfCVAB+fGqsc0kEBACVEABuZDsBgn4kQAVkB+vGttMAgEhQAUUkAvJbpCAHwlQAfnxqrHNJBAQAlRAAbmQ7AYJ+JEAFZAfrxrbTAIBIUAFFJALyW6QgB8JUAH58aqxzSQQEAJUQAG5kOwGCfiRABWQH68a20wCASFABRSQC8lukIAfCVAB+fGqsc0kEBACVEABuZDsBgn4kQAVkB+vGttMAgEhQAUUkAvJbpCAHwlQAfnxqrHNJBAQAlRAAbmQdnRjzZo10qBBA8mTJ4+UKVNGHnjgATl8+HC4qjp16sjbb78d/oyNfv36Sbdu3dJ8N2HCBFPOpZdeKvfff7+sWLEiQ/snTZok1apVM+2oXbu2LF68OM35Vu202p+mMH5wlAAVkKO4/VPZiRMn5M4775TcuXPLlClTpE+fPrJ8+XJp27ZtuBPr16+XgwcPhj9jY9euXfLdd9+Fv5s8ebL07NlTbrzxRpk4caKg3MaNG8uhQ4fMMVb7hw8fLt27d5eKFSvKjBkzpH79+tK0aVOZN2+eOd+qnVb7ww3lhjsEFIUEYhD46quvlL4j1TfffBPeO3/+fPX444+rv//+23yXLVs2NWbMmPB+bLRq1UppZWO+O3PmjMqRI4fq379/+JjTp0+rsmXLqpEjRyqr/UeOHFF58+ZVHTt2DJ+Pjfvuu0+VK1fOfGfVTqv9aQrmB8cJiOM1skJfEDh+/LjSox9VunRpNWTIELVp06Zz2m2lgLZs2XKOEossxGr/p59+as4fPXq0Wr16dfg1YMAA8/2BAweUVTut9ke2h9vOE6ACcp65b2rE6KFmzZrmnx2jofLly6tFixaF22+lgObOnWvO3bdvX/icyA2r/VOnTg3XjfqjX9q2Y4qzaqfV/sg2cdtZArQB6buaEpsADL5r166V3bt3y9ixYyV79uzSrFkzY+cJnfHXX3+FNs07bDv6FjbbBQoUMO+///57mmP2798vf/zxh1jtL1iwoDnvyy+/FP3Yd86rVq1aZr9VO632p2kcPzhKgArIUdz+qUw/8hjDMRRKqVKljCF52rRpRgnoxzHTERioI43QZ8+ele3bt4c7WaFCBcmSJYugrEhp2LCh9O7dW6z2V6pUyZw/e/Zs846y8Bo/fry0bNlStD3JlA0Dd3rtTKQfkW3jtsMEnB1wsTa/ENCzR6pw4cKqTZs2atu2bUrPbqnOnTurrFmzKtheII0aNVJ6lKI++eQTc0z79u2N0VlP3Zv9+NOuXTtVrFgxtXLlSqWVlRo6dKgpY+fOneYYq/0waufLl0/p2TD166+/qgULFqicOXOqgQMHmvOt2mm13xTCP64RoA3INfTer3jhwoWqXr16RmHo30VVokQJ9eGHH4YbvnnzZqVHMcY2A8Wkp+jV008/HZ4Fw4H68ct8f+GFF5rjoDxgVA6J1f6jR48q7X8UbkPRokVVly5d1MmTJ0NFKKt2Wu0PF8QNxwlkQY0OD7pYnc8IHDt2zPjv6H/+mC3fu3ev6FGK8RmKeYD+8tSpU4LjSpYsKdp4fc5hVvtha8L5pUuXNo9h5xSgv7Bqp9X+WGXyO3sJUAHZy5elkwAJxCFAI3QcONxFAiRgLwEqIHv5snQSIIE4BKiA4sDhLhIgAXsJUAHZy5elkwAJxCFABRQHDneRAAnYS4AKyF6+LJ0ESCAOASqgOHC4iwRIwF4CVED28mXpJEACcQhQAcWBw10kQAL2EqACspcvSycBEohDgAooDhzuIgESsJcAFZC9fFk6CZBAHAJUQHHgcBcJkIC9BKiA7OXL0kmABOIQoAKKA4e7SIAE7CVABWQvX5ZOAiQQhwAVUBw43EUCJGAvASoge/mydBIggTgEqIDiwOEuEiABewlQAdnLl6WTAAnEIUAFFAcOd5EACdhLgArIXr4snQRIIA6B/wN3/G8YxWdCZQAAAABJRU5ErkJggg==" /><!-- --></p>
+<pre><code>#&gt; NULL</code></pre>
+<p>bin_variable function should creates an object of class “binvar”. print.binvar(), summary.binvar(), and print.summary.binvar() should give us a printed out nice summary of our binomial random variable, including the following elements. trials: number of trials – prob: probability of success – mean: mean or expected value – variance: variance – mode: mode – skewness: skewness – kurtosis: kurtosis</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print method for object of class &quot;toss&quot;</span>
+print.binvar &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Binomial variable&quot;</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="st">&quot;Parameters&quot;</span>,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- number of trials:&quot;</span>, x<span class="op">$</span>trials,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- prob of success:&quot;</span>, x<span class="op">$</span>prob, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">invisible</span>(x)
+}
+<span class="kw">print.binvar</span>(<span class="kw">bin_variable</span>(<span class="dt">trials =</span> <span class="dv">10</span>, <span class="dt">prob =</span> <span class="fl">0.3</span>))
+<span class="co">#&gt; Binomial variable</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Parameters </span>
+<span class="co">#&gt; - number of trials: 10 </span>
+<span class="co">#&gt; - prob of success: 0.3</span>
+
+<span class="co">#Methods summary.binvar() and print.summary.binvar()</span>
+
+summary.binvar &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  summary &lt;-<span class="st"> </span><span class="kw">list</span>(
+    <span class="dt">trials =</span> x<span class="op">$</span>trials,
+    <span class="dt">prob =</span> x<span class="op">$</span>prob,
+    <span class="dt">mean =</span> <span class="kw">aux_mean</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob),
+    <span class="dt">variance =</span> <span class="kw">aux_variance</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob),
+    <span class="dt">mode =</span> <span class="kw">aux_mode</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob),
+    <span class="dt">skewness =</span> <span class="kw">aux_skewness</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob),
+    <span class="dt">kurtosis =</span> <span class="kw">aux_kurtosis</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob))
+  <span class="kw">class</span>(summary) &lt;-<span class="st"> &quot;summary.binvar&quot;</span>
+  <span class="kw">return</span>(summary)
+}
+
+bin1 &lt;-<span class="st"> </span><span class="kw">bin_variable</span>(<span class="dt">trials =</span> <span class="dv">10</span>, <span class="dt">prob =</span> <span class="fl">0.3</span>)
+binsum1 &lt;-<span class="st"> </span><span class="kw">summary</span>(bin1)
+binsum1
+<span class="co">#&gt; Summary Binomial</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Parameters </span>
+<span class="co">#&gt; - number of trials: 10 </span>
+<span class="co">#&gt; - prob of success: 0.3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Measures </span>
+<span class="co">#&gt; - mean    : 3 </span>
+<span class="co">#&gt; - variance: 2.1 </span>
+<span class="co">#&gt; - mode    : 3 </span>
+<span class="co">#&gt; - skewness: 0.2760262 </span>
+<span class="co">#&gt; - kurtosis: -0.1238095</span>
+
+
+print.summary.binvar &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Summary Binomial&quot;</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="st">&quot;Parameters&quot;</span>,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- number of trials:&quot;</span>, x<span class="op">$</span>trials,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- prob of success:&quot;</span>, x<span class="op">$</span>prob, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))
+  <span class="kw">cat</span>(<span class="st">&quot;Measures&quot;</span>,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- mean    :&quot;</span>, <span class="kw">aux_mean</span>(x[[<span class="dv">1</span>]],x[[<span class="dv">2</span>]]),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- variance:&quot;</span>, <span class="kw">aux_variance</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- mode    :&quot;</span>, <span class="kw">aux_mode</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- skewness:&quot;</span>, <span class="kw">aux_skewness</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">cat</span>(<span class="st">&quot;- kurtosis:&quot;</span>, <span class="kw">aux_kurtosis</span>(x<span class="op">$</span>trials,x<span class="op">$</span>prob), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  <span class="kw">invisible</span>(x)
+}</code></pre></div>
+<p>For our packages, we also create a test package that will test whether our functions will give us correct output. Those tests should not be visible to the users.</p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
